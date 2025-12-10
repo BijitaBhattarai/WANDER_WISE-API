@@ -1,0 +1,100 @@
+@BASE_URL=http://localhost:3000
+
+### create new user
+POST {{BASE_URL}}/users
+Content-Type: application/json
+
+{
+    "name": "henry Doe",
+    "email": "henry.doe@gmail.com",
+    "password": "password"
+}
+
+### Get all users
+GET {{BASE_URL}}/users 
+ 
+### Get user by id
+
+GET {{BASE_URL}}/users/691af6ce679594af902955ef
+
+### Update user by id
+PATCH {{BASE_URL}}/users/691b00adc7abc32e2e5f4044
+Content-Type: application/json
+
+{
+    "email": "jack.doe@example.com"
+}
+
+### Delete user by id
+DELETE {{BASE_URL}}/users/691b00adc7abc32e2e5f4044
+
+### Register a new user
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+    "name":"henry Doe",
+    "email":"henry.doe@gmail.com",
+    "password":"password"
+}
+
+### Login a user
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+    "email":"henry.doe@gmail.com",
+    "password":"password"
+}
+
+@BASE_URL=http://localhost:3000
+
+### Create a new Trip
+POST {{BASE_URL}}/trips
+Content-Type: application/json
+
+{
+    "user": "691af6ce679594af902955ef",
+    "title": "Trip to Kathmandu",
+    "description": "A fun trip with friends",
+    "startDate": "2025-12-20",
+    "endDate": "2025-12-25",
+    "destinations": ["Pashupatinath", "Swayambhu"],
+    "budget": {
+        "total": 50000,
+        "spent": 0,
+        "expenses": [
+            {
+                "name": "Hotel",
+                "amount": 10000,
+                "date": "2025-12-20"
+            },
+            {
+                "name": "Food",
+                "amount": 5000,
+                "date": "2025-12-21"
+            }
+        ]
+    }
+}
+
+### Get all Trips
+GET {{BASE_URL}}/trips
+
+### Get Trip by id
+GET {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6
+
+### Update Trip by id
+PATCH {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6
+Content-Type: application/json
+
+{
+    "title": "Trip to Pokhara and Lakeeside",
+    "budget": {
+       
+        "spent": 12000
+    }
+}
+
+### Delete Trip by id
+DELETE {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6
