@@ -4,18 +4,25 @@ export const CreateTripValidator = [
   body("title").notEmpty().withMessage("Title is required"),
   body("description").optional(),
   body("startDate")
+    .trim()
     .notEmpty()
     .withMessage("Start date is required")
-    .isISO8601()
-    .toDate()
+    .isDate()
     .withMessage("Start date must be a valid date"),
   body("endDate")
+    .trim()
     .notEmpty()
     .withMessage("End date is required")
-    .isISO8601()
-    .toDate()
-    .withMessage("End date must be a valid date"),
+    .isDate()
+    .withMessage("End date must be a valid date")
+    .custom((value, { req }) => {
+      if (value < req.body.startDate) {
+        throw new Error("End date must be after start date");
+      }
+      return true;
+    }),
   body("destinations")
+    .trim()
     .isArray({ min: 1 })
     .withMessage("At least one destination is required"),
   body("destinations.*")
@@ -46,8 +53,7 @@ export const CreateTripValidator = [
     .withMessage("Expense amount must be a number"),
   body("budget.expenses.*.date")
     .optional()
-    .isISO8601()
-    .toDate()
+    .isDate()
     .withMessage("Expense date must be a valid date"),
 ];
 

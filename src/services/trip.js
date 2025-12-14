@@ -5,13 +5,12 @@ const createTrip = async (tripData) => {
   const trip = await Trip.create(tripData);
   return trip;
 };
-// GET ALL TRIPS
+
 const getAllTrips = async () => {
   const trips = await Trip.find();
   return trips;
 };
 
-// GET SINGLE TRIP BY ID
 const getTripById = async (tripId) => {
   const trip = await Trip.findById(tripId);
   if (!trip) {
@@ -20,7 +19,6 @@ const getTripById = async (tripId) => {
   return trip;
 };
 
-// UPDATE TRIP BY ID
 const updateTripById = async (tripId, tripData) => {
   const trip = await Trip.findByIdAndUpdate(
     tripId,
@@ -42,7 +40,6 @@ const updateTripById = async (tripId, tripData) => {
   return trip;
 };
 
-// DELETE TRIP BY ID
 const deleteTripById = async (tripId) => {
   const trip = await Trip.findByIdAndDelete(tripId);
   if (!trip) {
