@@ -1,12 +1,14 @@
 @BASE_URL=http://localhost:3000
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTM5NDcxYjgzZGJhN2FjNDNiNThiYWQiLCJpYXQiOjE3NjU5NTM5MTcsImV4cCI6MTc2NjA0MDMxN30.KQk7B_FoqQzulZKcskC-w8HTE9mb0yLngtNP-EYgGlI
 
 ### create new user
 POST {{BASE_URL}}/users
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "name": "henry Doe",
-    "email": "henry.doe@gmail.com",
+    "name": "henryer Doe",
+    "email": "henryeer.doe@gmail.com",
     "password": "password"
 }
 
@@ -47,14 +49,13 @@ Content-Type: application/json
     "password":"password"
 }
 
-@BASE_URL=http://localhost:3000
-
 ### Create a new Trip
 POST {{BASE_URL}}/trips
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "user": "691af6ce679594af902955ef",
+   
     "title": "Trip to Kathmandu",
     "description": "A fun trip with friends",
     "startDate": "2025-12-20",
@@ -71,7 +72,7 @@ Content-Type: application/json
             },
             {
                 "name": "Food",
-                "amount": 5000,
+                "amount": 22000,
                 "date": "2025-12-21"
             }
         ]
@@ -80,21 +81,30 @@ Content-Type: application/json
 
 ### Get all Trips
 GET {{BASE_URL}}/trips
+Authorization: Bearer {{token}}
 
 ### Get Trip by id
-GET {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6
+GET {{BASE_URL}}/trips/693a984f01bfc1e2a3cf722f
+Authorization: Bearer {{token}}
+
 
 ### Update Trip by id
-PATCH {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6
+PATCH {{BASE_URL}}/trips/693a984f01bfc1e2a3cf722f
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "title": "Trip to Pokhara and Lakeeside",
-    "budget": {
-       
-        "spent": 12000
-    }
-}
+     "budget": {
+    "total": 50000,
+    "spent": 32000,
+    "expenses": [
+      {
+        "name": "drinks",
+        "amount": 28000,
+        "date":"2025-12-22"
+      }]
+}}
 
 ### Delete Trip by id
 DELETE {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6

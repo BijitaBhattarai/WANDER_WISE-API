@@ -21,7 +21,7 @@ const BudgetSchema = new Schema({
   },
   spent: {
     type: Number,
-    required: true,
+    default: 0,
   },
   expenses: [ExpenseSchema],
 });
@@ -56,6 +56,16 @@ const TripSchema = new Schema({
     },
   ],
   budget: BudgetSchema,
+});
+TripSchema.pre("findOneAndUpdate", function () {
+  const expenses = this.getUpdate().budget?.expenses;
+  if (expenses?.length) {
+    this.getUpdate().budget.spent +=
+      expenses.reduce((acc, expense) => acc + expense.amount, 0) || 0;
+    expenses.map((expense) => {
+      expense.date = new Date();
+    });
+  }
 });
 
 const Trip = model("Trip", TripSchema);

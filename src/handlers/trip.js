@@ -19,7 +19,7 @@ TRIP_ROUTER.post(
   useValidator(CreateTripValidator),
   async (req, res, next) => {
     try {
-      const trip = await createTrip(req.body);
+      const trip = await createTrip({ ...req.body, user: req.user.userId });
       res.status(201).json(trip);
     } catch (error) {
       next(error);
