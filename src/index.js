@@ -9,7 +9,7 @@ const SERVER = express();
 const PORT = process.env.PORT;
 
 connectDB();
-
+ 
 SERVER.use(express.json());
 SERVER.use(authMiddleware);
 SERVER.use("/", HANDLERS);
