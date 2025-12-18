@@ -1,5 +1,5 @@
 @BASE_URL=http://localhost:3000
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTM5NDcxYjgzZGJhN2FjNDNiNThiYWQiLCJpYXQiOjE3NjU5NTM5MTcsImV4cCI6MTc2NjA0MDMxN30.KQk7B_FoqQzulZKcskC-w8HTE9mb0yLngtNP-EYgGlI
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTQzZDc4Njc3MDI0ODNjNGI4ZDJjYzYiLCJpYXQiOjE3NjYwNTM3NjYsImV4cCI6MTc2NjE0MDE2Nn0.MMdeHAdTbaaSWdjsIqg_XLyG-BZ4RcXAbEmpW6LVVY8
 
 ### create new user
 POST {{BASE_URL}}/users
@@ -13,7 +13,8 @@ Authorization: Bearer {{token}}
 }
 
 ### Get all users
-GET {{BASE_URL}}/users 
+GET {{BASE_URL}}/users?search=jo&sort=id&order=asc
+Authorization: Bearer {{token}}
  
 ### Get user by id
 
@@ -36,7 +37,7 @@ Content-Type: application/json
 
 {
     "name":"henry Doe",
-    "email":"henry.doe@gmail.com",
+    "email":"henrey.doe@gmail.com",
     "password":"password"
 }
 

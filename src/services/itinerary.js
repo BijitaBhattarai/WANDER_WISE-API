@@ -1,7 +1,7 @@
-import ValidationError from "../errors/validation-error";
-import Itinerary from "../models/itinerary";
-import NotFoundError from "../errors/not-found-error";
-import { getTripById } from "./trip";
+import ValidationError from "../errors/validation-error.js";
+import Itinerary from "../models/itinerary.js";
+import NotFoundError from "../errors/not-found-error.js";
+import { getTripById } from "./trip.js";
 
 export const createItinerary = async (itineraryData) => {
   const trip = await getTripById(itineraryData.trip, itineraryData.user);
@@ -16,6 +16,15 @@ export const createItinerary = async (itineraryData) => {
 };
 
 export const getAllItineraries = async (id, userId, tripId) => {
+  await getTripById(tripId, userId);
+  const itinerary = await Itinerary.findById(id);
+  if (!itinerary) {
+    throw new NotFoundError("Itinerary now found");
+  }
+  return itinerary;
+};
+
+export const getItinerariesById = async (id, userId, tripId) => {
   await getTripById(tripId, userId);
   const itinerary = await Itinerary.findById(id);
   if (!itinerary) {

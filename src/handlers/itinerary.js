@@ -5,13 +5,18 @@ import {
   getItinerariesById,
   updateItineraryById,
   deleteItineraryById,
-} from "../services/itinerary";
+} from "../services/itinerary.js";
+import {
+  createItineraryValidator,
+  updateItineraryValidator,
+} from "../validators/itineraryValidator.js";
+import useValidator from "../middlewares/useValidator.js";
 
 const ITINERARY_ROUTER = Router();
 
 ITINERARY_ROUTER.post(
   "/",
-  useValidator(CreateItineraryValidator),
+  useValidator(createItineraryValidator),
   async (req, res, next) => {
     try {
       const baggage = await createItinerary({
@@ -37,7 +42,7 @@ ITINERARY_ROUTER.get("/", async (req, res, next) => {
 
 ITINERARY_ROUTER.get("/:id", async (req, res, next) => {
   try {
-    const trip = await getBaggageById(
+    const trip = await getItinerariesById(
       req.params.id,
       req.user.userId,
       req.params.tripId
@@ -50,7 +55,7 @@ ITINERARY_ROUTER.get("/:id", async (req, res, next) => {
 
 ITINERARY_ROUTER.patch(
   "/:id",
-  useValidator(UpdateItineraryValidator),
+  useValidator(updateItineraryValidator),
   async (req, res, next) => {
     try {
       const trip = await updateItineraryById(

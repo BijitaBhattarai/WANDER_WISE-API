@@ -27,7 +27,7 @@ const itinerarySchema = new Schema(
     },
     activities: [activitySchema],
     date: {
-      type: DataTransfer,
+      type: Date,
       required: true,
     },
   },

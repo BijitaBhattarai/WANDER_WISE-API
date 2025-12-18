@@ -28,7 +28,7 @@ USER_ROUTER.post(
 
 USER_ROUTER.get("/", async (req, res, next) => {
   try {
-    const user = await getAllUsers();
+    const user = await getAllUsers(req.query);
     res.status(200).json(user);
   } catch (error) {
     next(error);

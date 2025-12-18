@@ -6,9 +6,33 @@ const createUser = async (userData) => {
   return user;
 };
 
-const getAllUsers = async () => {
-  const users = await User.find();
-  return users;
+const getAllUsers = async (query) => {
+  const {
+    page = 1,
+    limit = 10,
+    search = "",
+    sort = "createdAt",
+    order = "desc",
+  } = query;
+  let where = {};
+  if (search) {
+    where.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } },
+    ];
+  }
+  const total = await User.countDocuments(where);
+  const totalPages = Math.ceil(total / limit);
+  const users = await User.find(where)
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .sort({ [sort]: order });
+  return {
+    users,
+    total: users.length,
+    limit: +limit,
+    totalPages,
+  };
 };
 
 const getUserById = async (userId) => {
