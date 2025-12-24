@@ -69,8 +69,8 @@ const inviteCollaborator = async (id, userId, collaboratorEmails) => {
   await sendMail(collaboratorEmails.join(","), "Invitation to join a trip", {
     link: `http://localhost:3000/trips/${id}`,
     title: trip.title,
-    startDate: trip.startDate,
-    endDate: trip.endDate,
+    startDate: trip.startDate.toDateString(),
+    endDate: trip.endDate.toDateString(),
     name: trip.user.name,
   });
   return { message: "Collaborators invited successfully" };
