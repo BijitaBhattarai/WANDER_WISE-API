@@ -12,7 +12,7 @@ import {
 } from "../validators/itineraryValidator.js";
 import useValidator from "../middlewares/useValidator.js";
 
-const ITINERARY_ROUTER = Router();
+const ITINERARY_ROUTER = Router({ mergeParams: true });
 
 ITINERARY_ROUTER.post(
   "/",

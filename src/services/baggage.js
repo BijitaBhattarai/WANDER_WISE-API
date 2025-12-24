@@ -27,11 +27,11 @@ const getBaggageById = async (id, userId, tripId) => {
 
 const updateBaggageById = async (id, userId, tripId, BaggageData) => {
   await getTripById(tripId, userId);
-  const baggage = await baggage.findOneAndUpdate(
+  const baggage = await Baggage.findOneAndUpdate(
     {
       _id: id,
-      trip: tripId,
       user: userId,
+      trip: tripId,
     },
     BaggageData,
     {
@@ -46,15 +46,15 @@ const updateBaggageById = async (id, userId, tripId, BaggageData) => {
   return baggage;
 };
 
-const deleteBaggageById = async (id, tripId, userId) => {
+const deleteBaggageById = async (baggageid, userId, tripId) => {
   await getTripById(tripId, userId);
-  const baggage = await Trip.findOneAndDelete({
-    _id: id,
-    trip: tripId,
+  const baggage = await Baggage.findOneAndDelete({
+    _id: baggageid,
     user: userId,
+    trip: tripId,
   });
   if (!baggage) {
-    throw new NotFoundError("Trip not found");
+    throw new NotFoundError("Baggage not found");
   }
   return { message: "Baggage deleted successfully" };
 };

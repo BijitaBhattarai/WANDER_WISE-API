@@ -1,4 +1,4 @@
-import Router from "express";
+import { Router } from "express";
 import {
   createBaggage,
   getAllBaggages,
@@ -13,7 +13,7 @@ import {
 } from "../validators/baggageValidator.js";
 import useValidator from "../middlewares/useValidator.js";
 
-const BAGGAGE_ROUTER = Router();
+const BAGGAGE_ROUTER = Router({ mergeParams: true });
 
 BAGGAGE_ROUTER.post(
   "/",
@@ -34,8 +34,8 @@ BAGGAGE_ROUTER.post(
 
 BAGGAGE_ROUTER.get("/", async (req, res, next) => {
   try {
-    const trips = await getAllBaggages(req.user.userId, req.params.tripId);
-    res.status(200).json(trips);
+    const baggages = await getAllBaggages(req.params.tripId, req.user.userId);
+    res.status(200).json(baggages);
   } catch (error) {
     next(error);
   }
@@ -43,12 +43,12 @@ BAGGAGE_ROUTER.get("/", async (req, res, next) => {
 
 BAGGAGE_ROUTER.get("/:id", async (req, res, next) => {
   try {
-    const trip = await getBaggageById(
+    const baggage = await getBaggageById(
       req.params.id,
       req.user.userId,
       req.params.tripId
     );
-    res.status(200).json(trip);
+    res.status(200).json(baggage);
   } catch (error) {
     next(error);
   }
@@ -59,13 +59,13 @@ BAGGAGE_ROUTER.patch(
   useValidator(UpdateBaggageValidator),
   async (req, res, next) => {
     try {
-      const trip = await updateBaggageById(
+      const baggage = await updateBaggageById(
         req.params.id,
-        req.body,
         req.user.userId,
-        req.params.tripId
+        req.params.tripId,
+        req.body
       );
-      res.status(200).json(trip);
+      res.status(200).json(baggage);
     } catch (error) {
       next(error);
     }
@@ -74,12 +74,15 @@ BAGGAGE_ROUTER.patch(
 
 BAGGAGE_ROUTER.delete("/:id", async (req, res, next) => {
   try {
-    const trip = await deleteBaggageById(
+    console.log("DELETE params:", req.params);
+    console.log("User:", req.user.userId);
+
+    const baggage = await deleteBaggageById(
       req.params.id,
       req.user.userId,
       req.params.tripId
     );
-    res.status(200).json(trip);
+    res.status(200).json(baggage);
   } catch (error) {
     next(error);
   }

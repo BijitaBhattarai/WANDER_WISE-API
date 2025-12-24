@@ -1,6 +1,5 @@
 @BASE_URL=http://localhost:3000
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTQzZDc4Njc3MDI0ODNjNGI4ZDJjYzYiLCJpYXQiOjE3NjYwNTM3NjYsImV4cCI6MTc2NjE0MDE2Nn0.MMdeHAdTbaaSWdjsIqg_XLyG-BZ4RcXAbEmpW6LVVY8
-
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTRiOWMzZjE1NDFhY2QyNTVjMWJhMDQiLCJpYXQiOjE3NjY1NjI4NzksImV4cCI6MTc2NjY0OTI3OX0.JJomN1zlasgFb5n88FS9MSzDI1zz8jSLvQyU8GU_qSg
 ### create new user
 POST {{BASE_URL}}/users
 Content-Type: application/json
@@ -8,7 +7,7 @@ Authorization: Bearer {{token}}
 
 {
     "name": "henryer Doe",
-    "email": "henryeer.doe@gmail.com",
+    "email": "henr.doe@gmail.com",
     "password": "password"
 }
 
@@ -19,6 +18,7 @@ Authorization: Bearer {{token}}
 ### Get user by id
 
 GET {{BASE_URL}}/users/691af6ce679594af902955ef
+Authorization: Bearer {{token}}
 
 ### Update user by id
 PATCH {{BASE_URL}}/users/691b00adc7abc32e2e5f4044
@@ -36,9 +36,9 @@ POST {{BASE_URL}}/auth/register
 Content-Type: application/json
 
 {
-    "name":"henry Doe",
-    "email":"henrey.doe@gmail.com",
-    "password":"password"
+    "name":"Bijita Bhattarai",
+    "email":"bbb@gmail.com",
+    "password":"bijitabhat"
 }
 
 ### Login a user
@@ -46,8 +46,8 @@ POST {{BASE_URL}}/auth/login
 Content-Type: application/json
 
 {
-    "email":"henry.doe@gmail.com",
-    "password":"password"
+    "email":"bijita@gmail.com",
+    "password":"bijitabhat"
 }
 
 ### Create a new Trip
@@ -109,3 +109,49 @@ Authorization: Bearer {{token}}
 
 ### Delete Trip by id
 DELETE {{BASE_URL}}/trips/693910e6cdb7caf7e1c10af6
+
+### create a new baggage
+POST {{BASE_URL}}/693a984f01bfc1e2a3cf722f/baggages
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "jacket"
+}
+
+### get all baggages
+GET {{BASE_URL}}/693a984f01bfc1e2a3cf722f/baggages
+Authorization: Bearer {{token}}
+
+### get baggages by id
+GET {{BASE_URL}}/693a984f01bfc1e2a3cf722f/baggages/694530be76254d99e5bd7718
+Authorization: Bearer {{token}}
+
+### update baggae by id
+PATCH {{BASE_URL}}/693a984f01bfc1e2a3cf722f/baggages/69452fa976254d99e5bd770b
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+     "name": "Sweater",
+  "completed": true
+}
+
+### delete baggage by id
+DELETE {{BASE_URL}}/693a984f01bfc1e2a3cf722f/baggages/69452f9376254d99e5bd7707
+Authorization: Bearer {{token}}
+
+
+### Invite collaborators to a trip
+POST {{BASE_URL}}/trips/693a984f01bfc1e2a3cf722f/invite
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "collaboratorEmails": [
+    "bhattaraibijita103@gmail.com",
+    "bijitabhattarai242@gmail.com"
+  ]
+}
+
+
