@@ -6,6 +6,8 @@ import {
   updateTripById,
   deleteTripById,
   inviteCollaborator,
+  addExpenses,
+  acceptInvitation,
 } from "../services/trip.js";
 import {
   CreateTripValidator,
@@ -25,12 +27,12 @@ TRIP_ROUTER.post(
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 TRIP_ROUTER.get("/", async (req, res, next) => {
   try {
-    const trips = await getAllTrips();
+    const trips = await getAllTrips(req.user.userId);
     res.status(200).json(trips);
   } catch (error) {
     next(error);
@@ -56,7 +58,7 @@ TRIP_ROUTER.patch(
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 TRIP_ROUTER.delete("/:id", async (req, res, next) => {
@@ -72,9 +74,26 @@ TRIP_ROUTER.post("/:id/invite", async (req, res, next) => {
     const result = await inviteCollaborator(
       req.params.id,
       req.user.userId,
-      req.body.collaboratorEmails
+      req.body.collaboratorEmails,
     );
 
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+TRIP_ROUTER.post("/expenses/:id", async (req, res, next) => {
+  try {
+    const result = await addExpenses(req.user.userId, req.params.id, req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+TRIP_ROUTER.get("/:id/invite/accept", async (req, res, next) => {
+  try {
+    const result = await acceptInvitation(req.query.token, req.user.userId);
     res.status(200).json(result);
   } catch (error) {
     next(error);

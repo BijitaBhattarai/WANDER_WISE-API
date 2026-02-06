@@ -11,6 +11,6 @@ HANDLERS.use("/users", USER_ROUTER);
 HANDLERS.use("/auth", AUTH_ROUTER);
 HANDLERS.use("/trips", TRIP_ROUTER);
 HANDLERS.use("/:tripId/baggages", BAGGAGE_ROUTER);
-HANDLERS.use("/:tripId/itinerary", ITINERARY_ROUTER);
+HANDLERS.use("/:tripId/itineraries", ITINERARY_ROUTER);
 
 export default HANDLERS;

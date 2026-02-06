@@ -19,22 +19,25 @@ ITINERARY_ROUTER.post(
   useValidator(createItineraryValidator),
   async (req, res, next) => {
     try {
-      const baggage = await createItinerary({
+      const itinerary = await createItinerary({
         ...req.body,
         user: req.user.userId,
         trip: req.params.tripId,
       });
-      res.status(201).json(baggage);
+      res.status(201).json(itinerary);
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 ITINERARY_ROUTER.get("/", async (req, res, next) => {
   try {
-    const trips = await getAllItineraries(req.user.userId, req.params.tripId);
-    res.status(200).json(trips);
+    const itineraries = await getAllItineraries(
+      req.user.userId,
+      req.params.tripId,
+    );
+    res.status(200).json(itineraries);
   } catch (error) {
     next(error);
   }
@@ -42,12 +45,12 @@ ITINERARY_ROUTER.get("/", async (req, res, next) => {
 
 ITINERARY_ROUTER.get("/:id", async (req, res, next) => {
   try {
-    const trip = await getItinerariesById(
+    const itinerary = await getItinerariesById(
       req.params.id,
       req.user.userId,
-      req.params.tripId
+      req.params.tripId,
     );
-    res.status(200).json(trip);
+    res.status(200).json(itinerary);
   } catch (error) {
     next(error);
   }
@@ -58,27 +61,28 @@ ITINERARY_ROUTER.patch(
   useValidator(updateItineraryValidator),
   async (req, res, next) => {
     try {
-      const trip = await updateItineraryById(
+      const itinerary = await updateItineraryById(
         req.params.id,
-        req.body,
+
         req.user.userId,
-        req.params.tripId
+        req.params.tripId,
+        req.body,
       );
-      res.status(200).json(trip);
+      res.status(200).json(itinerary);
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 ITINERARY_ROUTER.delete("/:id", async (req, res, next) => {
   try {
-    const trip = await deleteItineraryById(
+    const itinerary = await deleteItineraryById(
       req.params.id,
       req.user.userId,
-      req.params.tripId
+      req.params.tripId,
     );
-    res.status(200).json(trip);
+    res.status(200).json(itinerary);
   } catch (error) {
     next(error);
   }

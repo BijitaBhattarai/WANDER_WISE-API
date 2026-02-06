@@ -9,8 +9,10 @@ const createTrip = async (tripData) => {
   return trip;
 };
 
-const getAllTrips = async () => {
-  const trips = await Trip.find();
+const getAllTrips = async (userId) => {
+  const trips = await Trip.find({
+    $or: [{ user: userId }, { collaborators: userId }],
+  });
   return trips;
 };
 
@@ -35,7 +37,7 @@ const updateTripById = async (tripId, tripData) => {
       ...(tripData.destinations && { destinations: tripData.destinations }),
       ...(tripData.budget && { budget: tripData.budget }),
     },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (!trip) {
@@ -56,7 +58,7 @@ const inviteCollaborator = async (id, userId, collaboratorEmails) => {
   const trip = await getTripById(id, userId);
   if (
     trip.collaborators?.some((collaborator) =>
-      collaboratorEmails.includes(collaborator.email)
+      collaboratorEmails.includes(collaborator.email),
     )
   ) {
     throw new ConflictError("Collaborator already invited");
@@ -67,7 +69,7 @@ const inviteCollaborator = async (id, userId, collaboratorEmails) => {
   const invitationLink = `${process.env.BASE_URL}/trips/${id}/invite/accept?token=${token}`;
 
   await sendMail(collaboratorEmails.join(","), "Invitation to join a trip", {
-    link: `http://localhost:3000/trips/${id}`,
+    link: invitationLink,
     title: trip.title,
     startDate: trip.startDate.toDateString(),
     endDate: trip.endDate.toDateString(),
@@ -75,7 +77,47 @@ const inviteCollaborator = async (id, userId, collaboratorEmails) => {
   });
   return { message: "Collaborators invited successfully" };
 };
+export const acceptInvitation = async (token, userId) => {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+  const trip = await Trip.findOne({ _id: decoded.tripId }).populate(
+    "collaborators",
+  );
+  if (!trip) {
+    throw new NotFoundError("Trip not found");
+  }
+  if (
+    trip.collaborators.some(
+      (collaborator) => collaborator._id.toString() === userId.toString(),
+    )
+  ) {
+    throw new ConflictError("User already a collaborator");
+  }
+  trip.collaborators.push(userId);
+  await trip.save();
+  return { success: true, message: "Invitation accepted successfully" };
+};
 
+const addExpenses = async (userId, tripId, expenseData) => {
+  const trip = await Trip.findOne({
+    _id: tripId,
+    $or: [{ user: userId }, { collaborators: userId }],
+  });
+
+  if (!trip) {
+    throw new Error("Trip not found");
+  }
+
+  const date = new Date();
+  trip.budget.expenses.push({
+    ...expenseData,
+    date,
+  });
+
+  trip.budget.spent += expenseData.amount || 0;
+  await trip.save();
+
+  return { message: ` Expense: ${expenseData.name} added successfully` };
+};
 export {
   createTrip,
   getAllTrips,
@@ -83,4 +125,5 @@ export {
   updateTripById,
   deleteTripById,
   inviteCollaborator,
+  addExpenses,
 };

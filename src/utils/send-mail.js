@@ -7,7 +7,7 @@ const sendMail = async (to, subject, data) => {
     process.cwd(),
     "src",
     "templates",
-    "accept-invite.html"
+    "accept-invite.html",
   );
 
   let html = fs.readFileSync(templatePath, "utf8");
